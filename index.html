@@ -1,0 +1,161 @@
+<html>    
+    <header>
+        <title>Segment EXAMPLE</title>
+        <script>
+          //Enter the Segment JS SDK snippet right below this line 
+        </script>
+    </header>
+
+    <body>
+        <h1>Log events via the JS SDK!</h1>
+        
+        <p id="currentUser">There is no user logged in! This program logs events as Anonymous when there is no user logged in.</p>
+        
+        <p><label for="fname">Full name:</label><br>
+        <input type="text" id="UserID" name="fname"/>
+            
+        <p><label>Favorite food:</label><br>
+            <input type="text" id="favfood"/></p>
+        
+        <p><label>Age:</label><br>
+            <input type="text" id="age"/></p>
+        </p>
+    
+         <p><label>Color of your current shirt:</label><br>
+            <input type="text" id="color"/></p>
+    
+        <p><label>Day of the week:</label><br>
+            <input type="text" id="day"/></p>
+    
+        <button onclick="setUserID()">Log In</button>
+    
+        <p><button onclick="logevent()">Log event 1</button>
+        <button onclick="logevent2()">Log event 2</button>
+        <button onclick="logevent3()">Log event 3</button>
+        <p id="event">No events have been logged...</p></p>
+    
+        <p>
+            <label for="cars">Purchase an item:</label>
+            <select name="item" id="items">
+                <option value="socks">Socks</option>
+                <option value="Playstation 5">Playstation 5</option>
+                <option value="bananas">Banana</option>
+                <option value="earrings">Earrings</option>
+            </select>
+            <br><br>
+            <label for="amount">Quantity:</label>
+            <select name="quantities" id="quantity">
+                <option value=1>1</option>
+                <option value=2>2</option>
+                <option value=3>3</option>
+                <option value=4>4</option>
+            </select>
+            <p id="purchase">No items have been purchased... :(</p>
+            <button onclick="item()">Purchase</button>
+        </p>    
+    
+        <p>
+            <button onclick="logOut()">Log Out</button>
+        </p> 
+
+    <script>
+        
+        var now = Date.now(); //The now variable captures the time in epoch and this will be used to set the Amplitude session ID
+        console.log(now); //This records the now variable in the browser console
+                
+        function setUserID() {
+            var user = document.getElementById("UserID").value; //Gets the Full Name inputted by the user in the "user" variable
+            var age = document.getElementById("age").value; //The age variable captures the age that the user inputted in the website (if any)
+            var food = document.getElementById("favfood").value; //The food variable captures the favorite food of the user if they inputted one into the website
+            
+            document.getElementById("currentUser").innerHTML = user + " is logged in!"; 
+            
+            if(user != "") {
+                //Add the analytics.identify function here where the variable "user" should be the User ID and add the user properties age and favorite food below this line
+            }
+            else if(user == "") {
+                //Add the analytics.identify function here where "null" will be the User ID (anonymous) and add the user properties age and favorite food below this line
+            }
+            
+            //Log an event when the Log In button is clicked with no event properties below this line
+        }
+        
+        function logevent() {
+            //This function is for the button "Log Event 1"
+        	document.getElementById("event").innerHTML = document.getElementById("UserID").value +  " logged event 1!";
+
+            var color = document.getElementById("color").value; //The color variable captures the color shirt in the website if any
+            var day = document.getElementById("day").value; //The day variable captures the current day of the week if one is inputted in the website.
+
+            //Log an event using the analytics.track function along with the event properties color and day. Debating if to leave this as an example, I will leave it here for now so people can have a reference.
+             analytics.track("Log Event 1", {
+                ColorShirt: color,//What is the value of ColorShirt? Hint: a property above is holding this information.
+                Day: day //What is the value of Day? Hint: a property above is holding this information.
+            }, {
+               "Amplitude": {
+                   "session_id": now
+               }
+            });
+        }
+        
+        function logevent2() {
+            //This function is for the button "Log Event 2"
+			document.getElementById("event").innerHTML = document.getElementById("UserID").value +  " logged event 2!";
+
+            var color = document.getElementById("color").value; //The color variable captures the color shirt in the website if any
+            var day = document.getElementById("day").value; //The day variable captures the current day of the week if one is inputted in the website.
+
+            //Log an event using the analytics.track function along with the event properties color and day under this line
+        }
+        
+        function logevent3() {
+            //This function is for the button "Log Event 3"
+            document.getElementById("event").innerHTML = document.getElementById("UserID").value +  " logged event 3!";
+
+            var color = document.getElementById("color").value; //The color variable captures the color shirt in the website if any
+            var day = document.getElementById("day").value; //The day variable captures the current day of the week if one is inputted in the website.
+
+            //Log an event using the analytics.track function along with the event properties color and day under this line
+        }
+
+        function item() {
+
+        document.getElementById("purchase").innerHTML = "Thank you for purchasing " + document.getElementById("items").value + "!";
+        var name = document.getElementById("items").value; //The name variable capture the name of the item chosen in the dropdown menu
+        var cost = 1; //This is the price of the item depending which one is chosen. For example if in the website Socks is chosen then cost would equal 8.99.
+        var numOfItems = document.getElementById("quantity").value; //The quantity of the item chosen in the dropdown menu
+
+        if(name == "Playstation 5") {
+            cost = 499.99
+        }
+        else if(name == "socks") {
+            cost = 8.99
+        }
+        else if(name == "bananas") {
+            cost = 0.54
+            console.log(cost);
+        }
+        else if(name == "earrings") {
+            cost = 97.99
+        }
+
+        //Log Revenue event include event properties such as productId, quantity, price, revenueType using Segments Track call below this line
+        }
+        
+        function logOut() {
+            //Log a Log out event with no event properties using Segments track call below this line
+            
+            analytics.reset()
+            document.getElementById("event").innerHTML = "No events have been logged...";
+            document.getElementById("UserID").value = "";
+            document.getElementById("favfood").value = "";
+            document.getElementById("age").value = "";
+            document.getElementById("color").value = "";
+            document.getElementById("day").value = "";
+            document.getElementById("currentUser").innerHTML = "There is no user logged in! This program logs events as Anonymous when there is no user logged in.";
+        }
+    
+
+    </script>
+    </body>
+</html>
